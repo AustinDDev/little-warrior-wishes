@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom global styles */
+body {
+  background-color: white;
+  color: #1a1a1a;
+  font-family: 'Lato', sans-serif;
+}
+
+h1, h2, h3 {
+  font-weight: 700;
+  color: #47549e;
+}

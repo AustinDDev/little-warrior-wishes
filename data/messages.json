@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1762127980601,
+    "name": "Austin Dalton",
+    "email": "austin.dalton.dev@gmail.com",
+    "message": "Testing nodemailer and app password",
+    "date": "2025-11-02T23:59:40.601Z"
+  },
+  {
+    "id": 1762128042752,
+    "name": "Austin Dalton",
+    "email": "austin.dalton.dev@gmail.com",
+    "message": "Test number 2",
+    "date": "2025-11-03T00:00:42.752Z"
+  }
+]
