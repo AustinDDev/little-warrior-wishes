@@ -14,25 +14,20 @@ export async function POST(req: Request) {
       );
     }
 
-    // --- 1️⃣ Create the transporter safely ---
+    // Create email transporter using Gmail
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
+      service: "gmail",
       auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_PASS,
       },
     });
 
-    // --- 2️⃣ Verify transporter before sending (optional but safe) ---
-    await transporter.verify();
-
-    // --- 3️⃣ Construct the email ---
+    // Email content
     const mailOptions = {
       from: `"Little Warrior Wishes Website" <${process.env.GMAIL_USER}>`,
-      to: process.env.CONTACT_RECEIVER || "littlewarriorwishes@gmail.com",
-      subject: `📬 New Contact Form Submission from ${name}`,
+      to: process.env.CONTACT_RECEIVER || process.env.GMAIL_USER,
+      subject: `New Contact Form Message from ${name}`,
       text: `
 You have received a new message from the Little Warrior Wishes website.
 
@@ -44,19 +39,14 @@ ${message}
       `,
     };
 
-    // --- 4️⃣ Send the email ---
+    // Send email
     await transporter.sendMail(mailOptions);
 
-    // --- 5️⃣ Save locally for record-keeping ---
+    // Save message to local JSON file
     const messagesPath = path.join(process.cwd(), "data", "messages.json");
 
-    let messages: any[] = [];
-    try {
-      const existing = await fs.readFile(messagesPath, "utf8");
-      messages = existing ? JSON.parse(existing) : [];
-    } catch {
-      messages = [];
-    }
+    const existingData = await fs.readFile(messagesPath, "utf8");
+    const messages = existingData ? JSON.parse(existingData) : [];
 
     const newMessage = {
       id: Date.now(),
@@ -67,7 +57,7 @@ ${message}
     };
 
     messages.push(newMessage);
-    await fs.mkdir(path.dirname(messagesPath), { recursive: true });
+
     await fs.writeFile(messagesPath, JSON.stringify(messages, null, 2));
 
     return NextResponse.json({
@@ -75,9 +65,9 @@ ${message}
       message: "Message sent and saved successfully!",
     });
   } catch (error) {
-    console.error("❌ Contact API Error:", error);
+    console.error("Contact API error:", error);
     return NextResponse.json(
-      { error: "Failed to send or save message. Please try again later." },
+      { error: "Failed to send or save message." },
       { status: 500 }
     );
   }

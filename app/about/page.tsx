@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, ease: "easeOut" },
+  transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] as const },
 };
 
 export default function AboutPage() {
@@ -18,7 +18,7 @@ export default function AboutPage() {
         <div className="absolute inset-0">
           <Image
             src="/images/family-bg.jpg"
-            alt="Families creating memories together"
+            alt=""
             fill
             className="object-cover object-center opacity-25"
             priority
@@ -59,7 +59,7 @@ export default function AboutPage() {
           </div>
           <div className="max-w-lg text-left">
             <p className="text-gray-700 leading-relaxed">
-              Tala’s journey taught us that even in the most uncertain times, there is beauty,
+              Tala's journey taught us that even in the most uncertain times, there is beauty,
               hope, and connection. Every smile, every memory, every small act of kindness
               carries her spirit forward. Her life is a reminder that love’s impact never fades.
             </p>
@@ -85,10 +85,7 @@ export default function AboutPage() {
       </motion.section>
 
       {/* OUR STORY */}
-      <motion.section
-        {...fadeIn}
-        className="bg-[#f1f5f9] py-20"
-      >
+      <motion.section {...fadeIn} className="bg-[#f1f5f9] py-20">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
             <h2 className="text-4xl font-bold text-[#47549e]">Our Story</h2>
@@ -122,17 +119,14 @@ export default function AboutPage() {
       </motion.section>
 
       {/* VALUES SECTION */}
-      <motion.section
-        {...fadeIn}
-        className="max-w-6xl mx-auto px-6 py-20 text-center"
-      >
+      <motion.section {...fadeIn} className="max-w-6xl mx-auto px-6 py-20 text-center">
         <h2 className="text-4xl font-bold text-[#47549e] mb-12">What We Believe In</h2>
 
         <div className="grid md:grid-cols-3 gap-10">
           {[
             {
               title: "💙 Compassion",
-              text: "Every family’s story matters. We approach every interaction with empathy and understanding.",
+              text: "Every family's story matters. We approach every interaction with empathy and understanding.",
             },
             {
               title: "🦋 Connection",
@@ -145,8 +139,13 @@ export default function AboutPage() {
           ].map((value, i) => (
             <motion.div
               key={i}
-              {...fadeIn}
-              transition={{ duration: 0.5, delay: i * 0.2 }}
+              initial={fadeIn.initial}
+              animate={fadeIn.animate}
+              transition={{
+                duration: 0.5,
+                delay: i * 0.2,
+                ease: [0.25, 0.1, 0.25, 1] as const,
+              }}
               className="p-8 bg-[#f9fafb] rounded-lg shadow hover:shadow-lg transition"
             >
               <h3 className="text-2xl font-semibold text-[#47549e] mb-3">{value.title}</h3>
@@ -157,10 +156,7 @@ export default function AboutPage() {
       </motion.section>
 
       {/* CLOSING CTA */}
-      <motion.section
-        {...fadeIn}
-        className="bg-[#47549e] text-white py-20 text-center space-y-8"
-      >
+      <motion.section {...fadeIn} className="bg-[#47549e] text-white py-20 text-center space-y-8">
         <h2 className="text-4xl font-bold">Join Us in Inspiring Hope</h2>
         <p className="max-w-2xl mx-auto text-gray-200 text-lg">
           Whether through volunteering, donating, or sharing your story, your

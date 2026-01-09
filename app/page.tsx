@@ -40,6 +40,7 @@ export default function HomePage() {
         <h2 className="text-4xl font-bold text-[#47549e]">
           Together, We Make Every Moment Matter
         </h2>
+
         <p className="text-lg text-gray-700 max-w-3xl mx-auto">
           Little Warrior Wishes was founded on love, resilience, and hope.
           Through community events, adaptive programs, and personalized support,
@@ -57,6 +58,7 @@ export default function HomePage() {
               comfort, understanding, and friendship.
             </p>
           </div>
+
           <div className="bg-[#f9fafb] p-8 rounded-lg shadow hover:shadow-lg transition">
             <h3 className="text-2xl font-semibold text-[#47549e] mb-3">
               🌼 Compassion
@@ -66,6 +68,7 @@ export default function HomePage() {
               experiences and meaningful activities.
             </p>
           </div>
+
           <div className="bg-[#f9fafb] p-8 rounded-lg shadow hover:shadow-lg transition">
             <h3 className="text-2xl font-semibold text-[#47549e] mb-3">
               🦋 Memories
@@ -78,71 +81,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Recent Events / Blog Preview */}
-      <section className="bg-[#f1f5f9] py-20">
-        <div className="max-w-6xl mx-auto px-6 text-center space-y-10">
-          <h2 className="text-4xl font-bold text-[#47549e]">
-            Our Latest Stories
-          </h2>
-          <p className="text-gray-700 max-w-2xl mx-auto">
-            Discover how Little Warrior Wishes is making a difference in our
-            community — one event, one family, one smile at a time.
-          </p>
+      {/* Donate CTA Section – GAP REDUCED */}
+      <section className="bg-[#47549e] text-white text-center py-12 px-6 space-y-6">
+        <h2 className="text-4xl font-bold">
+          Your Support Makes Hope Possible
+        </h2>
 
-          <div className="grid md:grid-cols-3 gap-8 mt-10">
-            {[
-              {
-                title: "A Garden of Hope Blooms 🌸",
-                link: "/blog/butterfly-garden",
-                image: "/images/butterfly-garden.jpg",
-              },
-              {
-                title: "Memories in Motion: Summer Play Day ☀️",
-                link: "/blog/summer-playday",
-                image: "/images/summer-playday.jpg",
-              },
-              {
-                title: "Thank You to Our Volunteers 💙",
-                link: "/blog/volunteers",
-                image: "/images/volunteers.jpg",
-              },
-            ].map((post, i) => (
-              <Link
-                href={post.link}
-                key={i}
-                className="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden text-left"
-              >
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-6">
-                  <h3 className="text-2xl font-semibold text-[#47549e] mb-2">
-                    {post.title}
-                  </h3>
-                  <p className="text-[#82b0d5] font-medium">Read More →</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          <Link
-            href="/blog"
-            className="inline-block mt-8 bg-[#82b0d5] text-white px-6 py-3 rounded hover:bg-[#47549e] transition"
-          >
-            View All Stories
-          </Link>
-        </div>
-      </section>
-
-      {/* Donate CTA Section */}
-      <section className="bg-[#47549e] text-white text-center py-20 px-6 space-y-8">
-        <h2 className="text-4xl font-bold">Your Support Makes Hope Possible</h2>
         <p className="text-lg max-w-2xl mx-auto text-gray-200">
-          Every donation helps us create moments of love, joy, and connection
-          for families navigating life-limiting diagnoses. Together, we can make
-          a difference.
+          Whether through volunteering, donating, or sharing your story, your
+          involvement helps us bring comfort, connection, and joy to families
+          who need it most.
         </p>
 
         <div className="flex justify-center gap-4">
@@ -150,13 +98,13 @@ export default function HomePage() {
             href="/donate"
             className="bg-white text-[#47549e] px-6 py-3 rounded font-semibold hover:bg-gray-100 transition"
           >
-            Donate Now
+            Donate
           </Link>
           <Link
             href="/contact"
-            className="border border-white text-white px-6 py-3 rounded font-semibold hover:bg-[#82b0d5] transition"
+            className="border border-white px-6 py-3 rounded font-semibold hover:bg-[#82b0d5] transition"
           >
-            Get Involved
+            Contact Us
           </Link>
         </div>
       </section>

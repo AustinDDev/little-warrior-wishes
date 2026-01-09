@@ -10,14 +10,13 @@ export default function Header() {
 
   const navLinks = [
     { name: "About", href: "/about" },
-    { name: "Events", href: "/events" },
-    { name: "Blog", href: "/blog" },
+    { name: "Feed", href: "/feed" },
     { name: "Donate", href: "/donate" },
     { name: "Contact", href: "/contact" },
   ];
 
   return (
-    <header className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
+    <header className="sticky top-0 left-0 w-full bg-white shadow-md z-50">
       <div className="w-full flex items-center justify-between px-4 sm:px-8 h-14">
         {/* Logo / Title aligned left */}
         <Link

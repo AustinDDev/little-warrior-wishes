@@ -1,48 +1,50 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/feed", label: "Our Feed" },
+  { href: "/contact", label: "Contact" },
+];
+
+export default function NavBar() {
+  const pathname = usePathname();
 
   return (
-    <nav className="bg-white shadow-md fixed w-full top-0 z-50 border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-[#47549e] flex items-center gap-2">
-          🦋 Little Warrior Wishes
+    <header className="border-b bg-white/70 backdrop-blur dark:bg-zinc-900/70">
+      <nav className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+        {/* Logo / site name */}
+        <Link href="/" className="text-lg font-semibold tracking-tight">
+          Our Organization
         </Link>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-8 font-medium">
-          <Link href="/" className="hover:text-[#82b0d5]">Home</Link>
-          <Link href="/about" className="hover:text-[#82b0d5]">About</Link>
-          <Link href="/events" className="hover:text-[#82b0d5]">Events</Link>
-          <Link href="/donate" className="hover:text-[#82b0d5]">Donate</Link>
-          <Link href="/blog" className="hover:text-[#82b0d5]">Blog</Link>
-          <Link href="/contact" className="hover:text-[#82b0d5]">Contact</Link>
-        </div>
+        {/* Nav links */}
+        <ul className="flex items-center gap-2 text-sm">
+          {navItems.map(({ href, label }) => {
+            const isActive =
+              pathname === href ||
+              (href !== "/" && pathname?.startsWith(href));
 
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden text-[#47549e] focus:outline-none"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? "✕" : "☰"}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 py-4 space-y-3 px-6">
-          <Link href="/" className="block hover:text-[#82b0d5]">Home</Link>
-          <Link href="/about" className="block hover:text-[#82b0d5]">About</Link>
-          <Link href="/events" className="block hover:text-[#82b0d5]">Events</Link>
-          <Link href="/donate" className="block hover:text-[#82b0d5]">Donate</Link>
-          <Link href="/blog" className="block hover:text-[#82b0d5]">Blog</Link>
-          <Link href="/contact" className="block hover:text-[#82b0d5]">Contact</Link>
-        </div>
-      )}
-    </nav>
+            return (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className={`rounded-full px-3 py-1 transition ${
+                    isActive
+                      ? "bg-black text-white dark:bg-white dark:text-black"
+                      : "hover:bg-black/5 dark:hover:bg-white/10"
+                  }`}
+                >
+                  {label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+    </header>
   );
 }

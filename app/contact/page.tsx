@@ -36,93 +36,91 @@ export default function ContactPage() {
         </div>
 
         <form
-  onSubmit={async (e) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const formData = {
-      name: (form.elements.namedItem("name") as HTMLInputElement).value,
-      email: (form.elements.namedItem("email") as HTMLInputElement).value,
-      message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
-    };
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const form = e.currentTarget;
+            const formData = {
+              name: (form.elements.namedItem("name") as HTMLInputElement).value,
+              email: (form.elements.namedItem("email") as HTMLInputElement).value,
+              message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+            };
 
-    const res = await fetch("/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+            const res = await fetch("/api/contact", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(formData),
+            });
 
-    if (res.ok) {
-      alert("✅ Your message has been sent successfully!");
-      form.reset();
-    } else {
-      alert("❌ Something went wrong. Please try again later.");
-    }
-  }}
-  className="bg-[#f9fafb] p-8 rounded-lg shadow-lg space-y-6"
-  aria-label="Contact form"
->
-  {/* Form fields remain the same */}
-  <div>
-    <label
-      htmlFor="name"
-      className="block text-left font-semibold text-[#47549e] mb-2"
-    >
-      Name
-    </label>
-    <input
-      type="text"
-      id="name"
-      name="name"
-      placeholder="Your full name"
-      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
-      required
-    />
-  </div>
+            if (res.ok) {
+              alert("✅ Your message has been sent successfully!");
+              form.reset();
+            } else {
+              alert("❌ Something went wrong. Please try again later.");
+            }
+          }}
+          className="bg-[#f9fafb] p-8 rounded-lg shadow-lg space-y-6"
+          aria-label="Contact form"
+        >
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-left font-semibold text-[#47549e] mb-2"
+            >
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Your full name"
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
+              required
+            />
+          </div>
 
-  <div>
-    <label
-      htmlFor="email"
-      className="block text-left font-semibold text-[#47549e] mb-2"
-    >
-      Email
-    </label>
-    <input
-      type="email"
-      id="email"
-      name="email"
-      placeholder="you@example.com"
-      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
-      required
-    />
-  </div>
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-left font-semibold text-[#47549e] mb-2"
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@example.com"
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
+              required
+            />
+          </div>
 
-  <div>
-    <label
-      htmlFor="message"
-      className="block text-left font-semibold text-[#47549e] mb-2"
-    >
-      Message
-    </label>
-    <textarea
-      id="message"
-      name="message"
-      placeholder="Write your message here..."
-      rows={6}
-      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
-      required
-    ></textarea>
-  </div>
+          <div>
+            <label
+              htmlFor="message"
+              className="block text-left font-semibold text-[#47549e] mb-2"
+            >
+              Message
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              placeholder="Write your message here..."
+              rows={6}
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
+              required
+            ></textarea>
+          </div>
 
-  <motion.button
-    type="submit"
-    className="w-full bg-[#82b0d5] text-white font-semibold py-3 rounded-lg hover:bg-[#47549e] transition"
-    whileHover={{ scale: 1.02 }}
-    whileTap={{ scale: 0.98 }}
-  >
-    Send Message
-  </motion.button>
-</form>
-
+          <motion.button
+            type="submit"
+            className="w-full bg-[#82b0d5] text-white font-semibold py-3 rounded-lg hover:bg-[#47549e] transition"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Send Message
+          </motion.button>
+        </form>
       </motion.section>
 
       {/* Volunteer CTA Section */}
@@ -185,12 +183,6 @@ export default function ContactPage() {
             >
               linktr.ee/littlewarriorwishes
             </a>
-          </p>
-          <p>
-            💌 Mailing Address: <br />
-            <span className="text-gray-600">
-              Insert business address 
-            </span>
           </p>
         </div>
       </motion.section>

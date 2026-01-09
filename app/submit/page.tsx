@@ -3,177 +3,139 @@
 import { useState } from "react";
 
 export default function SubmitPage() {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [content, setContent] = useState("");
-  const [image, setImage] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
-  const [status, setStatus] = useState<string | null>(null);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    title: "",
+    story: "",
+  });
+  const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImage(file);
-      setPreview(URL.createObjectURL(file));
-    }
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus(null);
     setLoading(true);
 
+    const newStory = {
+      name: form.name,
+      email: form.email,
+      title: form.title,
+      story: form.story,
+      date: new Date().toLocaleDateString(),
+    };
+
     try {
-      let imageUrl = "";
-
-      // Step 1: Upload image if provided
-      if (image) {
-        const formData = new FormData();
-        formData.append("file", image);
-
-        const uploadRes = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
-
-        const uploadResult = await uploadRes.json();
-        if (!uploadRes.ok)
-          throw new Error(uploadResult.error || "Upload failed");
-
-        imageUrl = uploadResult.url;
-      }
-
-      // Step 2: Save story submission
-      const res = await fetch("/api/save", {
+      const res = await fetch("/api/save?file=submissions.json", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          author,
-          content,
-          image: imageUrl,
-        }),
+        body: JSON.stringify(newStory),
       });
 
-      const data = await res.json();
-
       if (res.ok) {
-        setStatus("✅ Story submitted successfully!");
-        setTitle("");
-        setAuthor("");
-        setContent("");
-        setImage(null);
-        setPreview(null);
+        setSubmitted(true);
       } else {
-        throw new Error(data.error || "Failed to save submission");
+        alert("Error submitting story. Please try again.");
       }
-    } catch (err: any) {
-      console.error("Submit error:", err);
-      setStatus(`❌ ${err.message}`);
+    } catch (error) {
+      console.error("Submit error:", error);
+      alert("There was a problem connecting to the server.");
     } finally {
       setLoading(false);
     }
   };
 
+  if (submitted) {
+    return (
+      <main className="flex flex-col items-center justify-center h-screen text-center text-[#47549e]">
+        <h1 className="text-3xl font-bold mb-4">Thank you for sharing your story!</h1>
+        <p className="text-lg text-gray-600 max-w-xl">
+          Your submission has been received and will appear in our pending review list shortly.
+        </p>
+        <a
+          href="/"
+          className="mt-6 inline-block bg-[#82b0d5] text-white px-6 py-3 rounded hover:bg-[#47549e] transition"
+        >
+          Return Home
+        </a>
+      </main>
+    );
+  }
+
   return (
-    <main className="max-w-3xl mx-auto px-6 py-16 text-gray-800">
+    <main className="max-w-2xl mx-auto px-6 py-16">
       <h1 className="text-4xl font-bold text-[#47549e] mb-8 text-center">
-        Share Your Story 💙
+        Share Your Story
       </h1>
-      <p className="text-center text-gray-600 mb-10">
-        Your experiences can inspire others. Share your story to help families
-        find hope, connection, and comfort.
-      </p>
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-2xl shadow-lg space-y-6"
+        className="space-y-6 bg-[#f9fafb] p-8 rounded-lg shadow-lg"
       >
         <div>
-          <label className="block text-sm font-semibold mb-2">Title</label>
+          <label className="block text-gray-700 font-semibold mb-2">Name</label>
           <input
             type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            name="name"
+            value={form.name}
+            onChange={handleChange}
             required
-            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
-            placeholder="Enter a title for your story"
+            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-semibold mb-2">Your Name</label>
+          <label className="block text-gray-700 font-semibold mb-2">Email</label>
           <input
-            type="text"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
             required
-            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
-            placeholder="Who is sharing this story?"
+            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-semibold mb-2">Story</label>
+          <label className="block text-gray-700 font-semibold mb-2">Story Title</label>
+          <input
+            type="text"
+            name="title"
+            value={form.title}
+            onChange={handleChange}
+            required
+            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
+          />
+        </div>
+
+        <div>
+          <label className="block text-gray-700 font-semibold mb-2">Your Story</label>
           <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            name="story"
+            value={form.story}
+            onChange={handleChange}
             required
             rows={6}
-            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
-            placeholder="Share your story here..."
-          />
-        </div>
-
-        <div>
-          <label htmlFor="image-upload" className="block text-sm font-semibold mb-2">
-            Upload an Image (optional)
-          </label>
-          <input
-            id="image-upload"
-            title="Upload an image for your story (optional)"
-            placeholder="Choose an image..."
-            aria-label="Upload an image (optional)"
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="w-full"
-          />
-
-          {preview && (
-            <div className="mt-4 text-center">
-              <p className="text-sm text-gray-600 mb-2">Preview:</p>
-              <img
-                src={preview}
-                alt="Preview"
-                className="max-h-64 mx-auto rounded-lg shadow-md"
-              />
-            </div>
-          )}
+            className="w-full p-3 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
+          ></textarea>
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-[#47549e] text-white py-3 rounded-lg font-semibold hover:bg-[#3c4688] transition disabled:opacity-50"
+          className={`w-full py-3 rounded font-semibold transition ${
+            loading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-[#82b0d5] text-white hover:bg-[#47549e]"
+          }`}
         >
-          {loading ? "Submitting..." : "Submit My Story"}
+          {loading ? "Submitting..." : "Submit Story"}
         </button>
-
-        {status && (
-          <p
-            className={`text-center font-medium ${
-              status.startsWith("✅")
-                ? "text-green-600"
-                : status.startsWith("❌")
-                ? "text-red-600"
-                : "text-gray-700"
-            }`}
-          >
-            {status}
-          </p>
-        )}
       </form>
     </main>
   );

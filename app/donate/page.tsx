@@ -18,7 +18,7 @@ export default function DonatePage() {
         <div className="absolute inset-0">
           <Image
             src="/images/donate-hero.jpg"
-            alt="Donations bringing hope to families"
+            alt=""
             fill
             className="object-cover object-center opacity-25"
             priority
