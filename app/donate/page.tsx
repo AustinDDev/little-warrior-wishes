@@ -4,10 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
+const EASE = [0.25, 0.1, 0.25, 1] as const;
+
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, ease: "easeOut" },
+  whileInView: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, ease: EASE },
+  viewport: { once: true },
 };
 
 export default function DonatePage() {
@@ -24,7 +27,7 @@ export default function DonatePage() {
             priority
           />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#47549e]/40 to-[#82b0d5]/40"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#47549e]/40 to-[#82b0d5]/40" />
 
         <div className="relative z-10 py-28 px-6 max-w-3xl mx-auto space-y-6">
           <h1 className="text-5xl font-extrabold">Donate & Make a Difference</h1>
@@ -35,7 +38,10 @@ export default function DonatePage() {
       </section>
 
       {/* WHY DONATIONS MATTER */}
-      <motion.section {...fadeIn} className="max-w-6xl mx-auto px-6 py-20 text-center space-y-10">
+      <motion.section
+        {...fadeIn}
+        className="max-w-6xl mx-auto px-6 py-20 text-center space-y-10"
+      >
         <h2 className="text-4xl font-bold text-[#47549e]">Your Generosity Creates Hope</h2>
         <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
           When you give to Little Warrior Wishes, you help us organize inclusive events, support families, and create lasting memories.
@@ -43,14 +49,28 @@ export default function DonatePage() {
 
         <div className="grid md:grid-cols-3 gap-8 mt-12">
           {[
-            { icon: "🌸", title: "Family Events", text: "Your donations fund adaptive family events, giving children and caregivers a place to laugh and connect." },
-            { icon: "💙", title: "Memory Creation", text: "Help families make unforgettable memories during challenging seasons." },
-            { icon: "🕊️", title: "Community Support", text: "Every gift strengthens our community, bringing hope and belonging." },
+            {
+              icon: "🌸",
+              title: "Family Events",
+              text: "Your donations fund adaptive family events, giving children and caregivers a place to laugh and connect.",
+            },
+            {
+              icon: "💙",
+              title: "Memory Creation",
+              text: "Help families make unforgettable memories during challenging seasons.",
+            },
+            {
+              icon: "🕊️",
+              title: "Community Support",
+              text: "Every gift strengthens our community, bringing hope and belonging.",
+            },
           ].map((item, i) => (
             <motion.div
               key={i}
-              {...fadeIn}
-              transition={{ duration: 0.6, delay: i * 0.2 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: i * 0.2, ease: EASE }}
               className="bg-[#f9fafb] p-8 rounded-lg shadow hover:shadow-lg transition flex flex-col justify-between"
             >
               <div>
@@ -95,20 +115,23 @@ export default function DonatePage() {
             ].map((opt, i) => (
               <motion.div
                 key={i}
-                {...fadeIn}
-                transition={{ duration: 0.6, delay: i * 0.2 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.2, ease: EASE }}
                 className="bg-white p-8 rounded-lg shadow hover:shadow-lg transition transform hover:scale-105 flex flex-col justify-between h-full"
               >
                 <div>
                   <Image
                     src={opt.logo}
                     alt={opt.title}
-                    width={100}
-                    height={50}
-                    className="mx-auto mb-6"
+                    width={120}
+                    height={60}
+                    className="mx-auto mb-6 object-contain"
                   />
                   <p className="text-gray-700 mb-4">{opt.text}</p>
                 </div>
+
                 <a
                   href={opt.link}
                   target="_blank"
@@ -124,27 +147,26 @@ export default function DonatePage() {
       </motion.section>
 
       {/* FINAL CTA */}
-<motion.section
-  {...fadeIn}
-  className="bg-[#47549e] text-white py-24 text-center px-6"
->
-  <div className="max-w-3xl mx-auto flex flex-col items-center justify-center space-y-6">
-    <h2 className="text-4xl font-bold leading-snug">
-      Join Our Mission of Hope
-    </h2>
-    <p className="text-lg max-w-2xl mx-auto text-gray-200 leading-relaxed">
-      Your support fuels our ability to bring comfort, joy, and connection
-      to families who need it most. <br className="hidden sm:block" />
-      Every gift matters.
-    </p>
-    <Link
-      href="/contact"
-      className="bg-white text-[#47549e] px-8 py-3 rounded font-semibold hover:bg-gray-100 transition text-lg shadow-md hover:shadow-lg"
-    >
-      Contact Us to Get Involved
-    </Link>
-  </div>
-</motion.section>
-</main>
-);
+      <motion.section
+        {...fadeIn}
+        className="bg-[#47549e] text-white py-24 text-center px-6"
+      >
+        <div className="max-w-3xl mx-auto flex flex-col items-center justify-center space-y-6">
+          <h2 className="text-4xl font-bold leading-snug">Join Our Mission of Hope</h2>
+          <p className="text-lg max-w-2xl mx-auto text-gray-200 leading-relaxed">
+            Your support fuels our ability to bring comfort, joy, and connection to families who need it most.
+            <br className="hidden sm:block" />
+            Every gift matters.
+          </p>
+
+          <Link
+            href="/contact"
+            className="bg-white text-[#47549e] px-8 py-3 rounded font-semibold hover:bg-gray-100 transition text-lg shadow-md hover:shadow-lg"
+          >
+            Contact Us to Get Involved
+          </Link>
+        </div>
+      </motion.section>
+    </main>
+  );
 }
