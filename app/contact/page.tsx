@@ -10,12 +10,10 @@ export default function ContactPage() {
   const [status, setStatus] = useState<"idle" | "success">("idle");
 
   useEffect(() => {
-    // Show success state if Formspree redirects back with ?submitted=1
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       if (params.get("submitted") === "1") {
         setStatus("success");
-        // Optional: clean the URL so refresh doesn't keep showing success
         window.history.replaceState({}, "", window.location.pathname);
       }
     }
@@ -47,8 +45,6 @@ export default function ContactPage() {
           <h2 className="text-4xl font-bold text-[#47549e]">Contact Us</h2>
           <p className="text-gray-700 max-w-2xl mx-auto">
             Please fill out the form below and we’ll respond as soon as possible.
-            You can also reach us directly via our social media links or email
-            listed below.
           </p>
         </div>
 
@@ -60,8 +56,6 @@ export default function ContactPage() {
         >
           {/* Formspree helper fields */}
           <input type="hidden" name="_subject" value="New Contact Form Message" />
-
-          {/* This tells Formspree where to redirect after success */}
           <input type="hidden" name="_next" value="/contact?submitted=1" />
 
           <div>
@@ -115,14 +109,15 @@ export default function ContactPage() {
             ></textarea>
           </div>
 
-          <motion.button
-            type="submit"
-            className="w-full bg-[#82b0d5] text-white font-semibold py-3 rounded-lg hover:bg-[#47549e] transition"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            Send Message
-          </motion.button>
+          {/* ✅ FIXED SUBMIT BUTTON */}
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <button
+              type="submit"
+              className="w-full bg-[#82b0d5] text-white font-semibold py-3 rounded-lg hover:bg-[#47549e] transition"
+            >
+              Send Message
+            </button>
+          </motion.div>
 
           {status === "success" && (
             <p className="text-center text-green-700 font-medium">
@@ -148,9 +143,7 @@ export default function ContactPage() {
         >
           <h2 className="text-4xl font-bold">Join Our Volunteer Team</h2>
           <p className="text-lg text-gray-200 leading-relaxed">
-            Volunteers are the heartbeat of Little Warrior Wishes. Whether it’s
-            helping at events, organizing donations, or simply lending a hand —
-            your time makes an incredible difference.
+            Volunteers are the heartbeat of Little Warrior Wishes.
           </p>
           <Link
             href="/events"
