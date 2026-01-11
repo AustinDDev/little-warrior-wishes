@@ -2,8 +2,15 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useState } from "react";
+
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xpqqaplr";
 
 export default function ContactPage() {
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
+    "idle"
+  );
+
   return (
     <main className="bg-white text-gray-800">
       {/* Header Section */}
@@ -29,33 +36,45 @@ export default function ContactPage() {
         <div className="text-center mb-12 space-y-4">
           <h2 className="text-4xl font-bold text-[#47549e]">Contact Us</h2>
           <p className="text-gray-700 max-w-2xl mx-auto">
-            Please fill out the form below and we’ll respond as soon as
-            possible. You can also reach us directly via our social media links
-            or email listed below.
+            Please fill out the form below and we’ll respond as soon as possible.
+            You can also reach us directly via our social media links or email
+            listed below.
           </p>
         </div>
 
         <form
           onSubmit={async (e) => {
             e.preventDefault();
+            setStatus("sending");
+
             const form = e.currentTarget;
-            const formData = {
-              name: (form.elements.namedItem("name") as HTMLInputElement).value,
-              email: (form.elements.namedItem("email") as HTMLInputElement).value,
-              message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
-            };
 
-            const res = await fetch("/api/contact", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(formData),
-            });
+            const name = (form.elements.namedItem("name") as HTMLInputElement)
+              .value;
+            const email = (form.elements.namedItem("email") as HTMLInputElement)
+              .value;
+            const message = (
+              form.elements.namedItem("message") as HTMLTextAreaElement
+            ).value;
 
-            if (res.ok) {
-              alert("✅ Your message has been sent successfully!");
-              form.reset();
-            } else {
-              alert("❌ Something went wrong. Please try again later.");
+            try {
+              const res = await fetch(FORMSPREE_ENDPOINT, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Accept: "application/json",
+                },
+                body: JSON.stringify({ name, email, message }),
+              });
+
+              if (res.ok) {
+                setStatus("success");
+                form.reset();
+              } else {
+                setStatus("error");
+              }
+            } catch {
+              setStatus("error");
             }
           }}
           className="bg-[#f9fafb] p-8 rounded-lg shadow-lg space-y-6"
@@ -114,12 +133,25 @@ export default function ContactPage() {
 
           <motion.button
             type="submit"
-            className="w-full bg-[#82b0d5] text-white font-semibold py-3 rounded-lg hover:bg-[#47549e] transition"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            disabled={status === "sending"}
+            className="w-full bg-[#82b0d5] text-white font-semibold py-3 rounded-lg hover:bg-[#47549e] transition disabled:opacity-60 disabled:cursor-not-allowed"
+            whileHover={{ scale: status === "sending" ? 1 : 1.02 }}
+            whileTap={{ scale: status === "sending" ? 1 : 0.98 }}
           >
-            Send Message
+            {status === "sending" ? "Sending..." : "Send Message"}
           </motion.button>
+
+          {status === "success" && (
+            <p className="text-center text-green-700 font-medium">
+              ✅ Your message has been sent successfully!
+            </p>
+          )}
+
+          {status === "error" && (
+            <p className="text-center text-red-700 font-medium">
+              ❌ Something went wrong. Please try again later.
+            </p>
+          )}
         </form>
       </motion.section>
 
