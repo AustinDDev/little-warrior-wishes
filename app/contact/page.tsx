@@ -2,14 +2,24 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xpqqaplr";
 
 export default function ContactPage() {
-  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
-    "idle"
-  );
+  const [status, setStatus] = useState<"idle" | "success">("idle");
+
+  useEffect(() => {
+    // Show success state if Formspree redirects back with ?submitted=1
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("submitted") === "1") {
+        setStatus("success");
+        // Optional: clean the URL so refresh doesn't keep showing success
+        window.history.replaceState({}, "", window.location.pathname);
+      }
+    }
+  }, []);
 
   return (
     <main className="bg-white text-gray-800">
@@ -43,43 +53,17 @@ export default function ContactPage() {
         </div>
 
         <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-            setStatus("sending");
-
-            const form = e.currentTarget;
-
-            const name = (form.elements.namedItem("name") as HTMLInputElement)
-              .value;
-            const email = (form.elements.namedItem("email") as HTMLInputElement)
-              .value;
-            const message = (
-              form.elements.namedItem("message") as HTMLTextAreaElement
-            ).value;
-
-            try {
-              const res = await fetch(FORMSPREE_ENDPOINT, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Accept: "application/json",
-                },
-                body: JSON.stringify({ name, email, message }),
-              });
-
-              if (res.ok) {
-                setStatus("success");
-                form.reset();
-              } else {
-                setStatus("error");
-              }
-            } catch {
-              setStatus("error");
-            }
-          }}
+          action={FORMSPREE_ENDPOINT}
+          method="POST"
           className="bg-[#f9fafb] p-8 rounded-lg shadow-lg space-y-6"
           aria-label="Contact form"
         >
+          {/* Formspree helper fields */}
+          <input type="hidden" name="_subject" value="New Contact Form Message" />
+
+          {/* This tells Formspree where to redirect after success */}
+          <input type="hidden" name="_next" value="/contact?submitted=1" />
+
           <div>
             <label
               htmlFor="name"
@@ -133,23 +117,16 @@ export default function ContactPage() {
 
           <motion.button
             type="submit"
-            disabled={status === "sending"}
-            className="w-full bg-[#82b0d5] text-white font-semibold py-3 rounded-lg hover:bg-[#47549e] transition disabled:opacity-60 disabled:cursor-not-allowed"
-            whileHover={{ scale: status === "sending" ? 1 : 1.02 }}
-            whileTap={{ scale: status === "sending" ? 1 : 0.98 }}
+            className="w-full bg-[#82b0d5] text-white font-semibold py-3 rounded-lg hover:bg-[#47549e] transition"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
-            {status === "sending" ? "Sending..." : "Send Message"}
+            Send Message
           </motion.button>
 
           {status === "success" && (
             <p className="text-center text-green-700 font-medium">
               ✅ Your message has been sent successfully!
-            </p>
-          )}
-
-          {status === "error" && (
-            <p className="text-center text-red-700 font-medium">
-              ❌ Something went wrong. Please try again later.
             </p>
           )}
         </form>
