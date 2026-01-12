@@ -1,29 +1,43 @@
-<form
-  action="https://formspree.io/f/xpqqaplr"
-  method="POST"
-  className="bg-[#f9fafb] p-8 rounded-lg shadow-lg space-y-6"
->
-  <input type="hidden" name="_subject" value="New Contact Form Message" />
+"use client";
 
-  <label className="block">
-    <span className="block mb-2 font-semibold text-[#47549e]">Name</span>
-    <input name="name" required className="w-full border rounded-lg px-4 py-3" />
-  </label>
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xpqqaplr";
 
-  <label className="block">
-    <span className="block mb-2 font-semibold text-[#47549e]">Email</span>
-    <input name="email" type="email" required className="w-full border rounded-lg px-4 py-3" />
-  </label>
+export default function Page() {
+  return (
+    <main style={{ padding: 24 }}>
+      <h1>Contact</h1>
 
-  <label className="block">
-    <span className="block mb-2 font-semibold text-[#47549e]">Message</span>
-    <textarea name="message" required rows={6} className="w-full border rounded-lg px-4 py-3" />
-  </label>
+      <form action={FORMSPREE_ENDPOINT} method="POST">
+        <input type="hidden" name="_subject" value="New Contact Form Message" />
 
-  <button
-    type="submit"
-    className="w-full bg-[#82b0d5] text-white font-semibold py-3 rounded-lg"
-  >
-    Send Message
-  </button>
-</form>
+        <div style={{ marginTop: 12 }}>
+          <label>
+            Name
+            <br />
+            <input name="name" required />
+          </label>
+        </div>
+
+        <div style={{ marginTop: 12 }}>
+          <label>
+            Email
+            <br />
+            <input name="email" type="email" required />
+          </label>
+        </div>
+
+        <div style={{ marginTop: 12 }}>
+          <label>
+            Message
+            <br />
+            <textarea name="message" rows={6} required />
+          </label>
+        </div>
+
+        <button style={{ marginTop: 12 }} type="submit">
+          Send
+        </button>
+      </form>
+    </main>
+  );
+}
