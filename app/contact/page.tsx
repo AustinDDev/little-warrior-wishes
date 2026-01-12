@@ -7,15 +7,19 @@ import { useEffect, useState } from "react";
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xpqqaplr";
 
 export default function ContactPage() {
-  const [status, setStatus] = useState<"idle" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get("submitted") === "1") {
-        setStatus("success");
-        window.history.replaceState({}, "", window.location.pathname);
-      }
+    if (typeof window === "undefined") return;
+
+    // Formspree can redirect back with ?sent=1 or ?error=1
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("sent") === "1") setStatus("success");
+    if (params.get("error") === "1") setStatus("error");
+
+    // optional: clean URL
+    if (params.get("sent") === "1" || params.get("error") === "1") {
+      window.history.replaceState({}, "", window.location.pathname);
     }
   }, []);
 
@@ -23,12 +27,12 @@ export default function ContactPage() {
     <main className="bg-white text-gray-800">
       {/* Header Section */}
       <section className="relative bg-[#82b0d5] text-white py-24 px-6 text-center overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/contact-bg.jpg')] bg-cover bg-center opacity-20"></div>
+        <div className="absolute inset-0 bg-[url('/images/contact-bg.jpg')] bg-cover bg-center opacity-20" />
         <div className="relative z-10 max-w-3xl mx-auto space-y-6">
           <h1 className="text-5xl font-extrabold">Get in Touch</h1>
           <p className="text-lg leading-relaxed">
             Whether you’d like to volunteer, share your story, or simply learn
-            more — we’d love to hear from you.
+            more, we’d love to hear from you.
           </p>
         </div>
       </section>
@@ -44,19 +48,26 @@ export default function ContactPage() {
         <div className="text-center mb-12 space-y-4">
           <h2 className="text-4xl font-bold text-[#47549e]">Contact Us</h2>
           <p className="text-gray-700 max-w-2xl mx-auto">
-            Please fill out the form below and we’ll respond as soon as possible.
+            Fill out the form below and we’ll respond as soon as possible.
           </p>
         </div>
 
+        {/* ✅ Native POST to Formspree (most reliable on Vercel) */}
         <form
           action={FORMSPREE_ENDPOINT}
           method="POST"
           className="bg-[#f9fafb] p-8 rounded-lg shadow-lg space-y-6"
           aria-label="Contact form"
         >
-          {/* Formspree helper fields */}
+          {/* Helpful metadata */}
           <input type="hidden" name="_subject" value="New Contact Form Message" />
-          <input type="hidden" name="_next" value="/contact?submitted=1" />
+          <input type="hidden" name="_format" value="plain" />
+
+          {/* Redirect back to your page (adjust if your route is not /contact) */}
+          <input type="hidden" name="_next" value="/contact?sent=1" />
+
+          {/* Optional: honeypot to reduce spam */}
+          <input type="text" name="_gotcha" className="hidden" tabIndex={-1} autoComplete="off" />
 
           <div>
             <label
@@ -66,12 +77,12 @@ export default function ContactPage() {
               Name
             </label>
             <input
-              type="text"
               id="name"
               name="name"
+              type="text"
               placeholder="Your full name"
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
               required
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
             />
           </div>
 
@@ -83,12 +94,12 @@ export default function ContactPage() {
               Email
             </label>
             <input
-              type="email"
               id="email"
               name="email"
+              type="email"
               placeholder="you@example.com"
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
               required
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
             />
           </div>
 
@@ -104,12 +115,12 @@ export default function ContactPage() {
               name="message"
               placeholder="Write your message here..."
               rows={6}
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
               required
-            ></textarea>
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#82b0d5]"
+            />
           </div>
 
-          {/* ✅ FIXED SUBMIT BUTTON */}
+          {/* ✅ Submit button: plain HTML button for maximum reliability */}
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <button
               type="submit"
@@ -122,6 +133,12 @@ export default function ContactPage() {
           {status === "success" && (
             <p className="text-center text-green-700 font-medium">
               ✅ Your message has been sent successfully!
+            </p>
+          )}
+
+          {status === "error" && (
+            <p className="text-center text-red-700 font-medium">
+              ❌ Something went wrong. Please try again.
             </p>
           )}
         </form>
@@ -138,56 +155,3 @@ export default function ContactPage() {
         <motion.div
           className="max-w-3xl mx-auto flex flex-col items-center space-y-6"
           initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          <h2 className="text-4xl font-bold">Join Our Volunteer Team</h2>
-          <p className="text-lg text-gray-200 leading-relaxed">
-            Volunteers are the heartbeat of Little Warrior Wishes.
-          </p>
-          <Link
-            href="/events"
-            className="bg-white text-[#47549e] px-8 py-3 rounded font-semibold hover:bg-gray-100 transition text-lg shadow-md hover:shadow-lg"
-          >
-            View Upcoming Events
-          </Link>
-        </motion.div>
-      </motion.section>
-
-      {/* Contact Details */}
-      <motion.section
-        className="max-w-4xl mx-auto px-6 py-20 text-center"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-        viewport={{ once: true }}
-      >
-        <h3 className="text-3xl font-bold text-[#47549e] mb-8">
-          Other Ways to Reach Us
-        </h3>
-        <div className="space-y-4 text-lg text-gray-700">
-          <p>
-            📧 Email:{" "}
-            <a
-              href="mailto:littlewarriorwishes@gmail.com"
-              className="text-[#47549e] font-semibold hover:underline"
-            >
-              littlewarriorwishes@gmail.com
-            </a>
-          </p>
-          <p>
-            🌐 Social Media:{" "}
-            <a
-              href="https://linktr.ee/littlewarriorwishes"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#47549e] font-semibold hover:underline"
-            >
-              linktr.ee/littlewarriorwishes
-            </a>
-          </p>
-        </div>
-      </motion.section>
-    </main>
-  );
-}
