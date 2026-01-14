@@ -1,13 +1,15 @@
 import Link from "next/link";
 
+// Use the canonical public Page URL as the default (works better with the Page Plugin)
 const FACEBOOK_PAGE_URL =
   process.env.NEXT_PUBLIC_FACEBOOK_PAGE_URL ||
-  "https://www.facebook.com/profile.php?id=100082898754331";
+  "https://www.facebook.com/p/Little-Warrior-Wishes-100082898754331/";
 
 export default function NewsPage() {
   const encoded = encodeURIComponent(FACEBOOK_PAGE_URL);
 
-  const pluginSrc = `https://www.facebook.com/plugins/page.php?href=${encoded}&tabs=timeline&width=500&height=975&small_header=false&adapt_container_width=false&hide_cover=false&show_facepile=true`;
+  // Make the plugin responsive on mobile
+  const pluginSrc = `https://www.facebook.com/plugins/page.php?href=${encoded}&tabs=timeline&width=500&height=975&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true`;
 
   return (
     <div>
@@ -55,17 +57,16 @@ export default function NewsPage() {
           </p>
 
           <div className="flex justify-center pt-2">
-            <div className="w-full max-w-[500px] rounded-xl">
+            <div className="w-full max-w-[500px] rounded-xl overflow-hidden">
               <iframe
                 title="Little Warrior Wishes Facebook Page"
                 src={pluginSrc}
-                width="500"
-                height="975"
-                className="block"
-                style={{ border: "none", width: "100%" }}
+                className="block w-full"
+                style={{ border: "none", height: "975px" }}
                 scrolling="no"
                 frameBorder="0"
                 allow="encrypted-media; picture-in-picture; clipboard-write"
+                loading="lazy"
               />
             </div>
           </div>
