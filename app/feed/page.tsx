@@ -1,19 +1,34 @@
-import Link from "next/link";
+"use client";
 
-// Use the canonical public Page URL as the default (works better with the Page Plugin)
+import Link from "next/link";
+import Script from "next/script";
+import { useEffect } from "react";
+
 const FACEBOOK_PAGE_URL =
   process.env.NEXT_PUBLIC_FACEBOOK_PAGE_URL ||
   "https://www.facebook.com/p/Little-Warrior-Wishes-100082898754331/";
 
 export default function NewsPage() {
-  const encoded = encodeURIComponent(FACEBOOK_PAGE_URL);
+  // Re-parse the plugin after the page hydrates (helps with “loads then disappears” + Next routing)
+  useEffect(() => {
+    const w = window as any;
 
-  // Make the plugin responsive on mobile
-  const pluginSrc = `https://www.facebook.com/plugins/page.php?href=${encoded}&tabs=timeline&width=500&height=975&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true`;
+    const tryParse = () => {
+      if (w.FB && w.FB.XFBML && typeof w.FB.XFBML.parse === "function") {
+        w.FB.XFBML.parse();
+      }
+    };
+
+    // Try immediately, then once more shortly after (FB SDK can load slightly later on mobile)
+    tryParse();
+    const t = setTimeout(tryParse, 800);
+
+    return () => clearTimeout(t);
+  }, []);
 
   return (
     <div>
-      {/* HERO HEADER (matches About page vibe) */}
+      {/* HERO HEADER */}
       <section className="w-full bg-[#7f97c8] text-white">
         <div className="mx-auto max-w-5xl px-4 py-14 text-center space-y-4">
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-[#47549e]">
@@ -24,6 +39,14 @@ export default function NewsPage() {
           </p>
         </div>
       </section>
+
+      {/* Load Facebook JS SDK (recommended for Social Plugins) */}
+      <div id="fb-root" />
+      <Script
+        id="facebook-jssdk"
+        strategy="afterInteractive"
+        src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v20.0"
+      />
 
       {/* PAGE CONTENT */}
       <div className="mx-auto max-w-3xl px-4 py-10 space-y-8">
@@ -49,7 +72,7 @@ export default function NewsPage() {
           </div>
         </section>
 
-        {/* Facebook timeline embed */}
+        {/* Facebook timeline embed (SDK/XFBML) */}
         <section className="rounded-2xl border p-6 bg-white/70 shadow-sm space-y-3">
           <h2 className="text-xl font-semibold text-center">Facebook timeline</h2>
           <p className="text-sm opacity-70 text-center">
@@ -58,18 +81,25 @@ export default function NewsPage() {
 
           <div className="flex justify-center pt-2">
             <div className="w-full max-w-[500px] rounded-xl overflow-hidden">
-              <iframe
-                title="Little Warrior Wishes Facebook Page"
-                src={pluginSrc}
-                className="block w-full"
-                style={{ border: "none", height: "975px" }}
-                scrolling="no"
-                frameBorder="0"
-                allow="encrypted-media; picture-in-picture; clipboard-write"
-                loading="lazy"
+              <div
+                className="fb-page"
+                data-href={FACEBOOK_PAGE_URL}
+                data-tabs="timeline"
+                data-width="500"
+                data-height="975"
+                data-small-header="false"
+                data-adapt-container-width="true"
+                data-hide-cover="false"
+                data-show-facepile="true"
               />
             </div>
           </div>
+
+          <noscript>
+            <p className="text-sm opacity-70 text-center">
+              JavaScript is required to display the Facebook feed. Use the button above to open Facebook directly.
+            </p>
+          </noscript>
         </section>
       </div>
     </div>
