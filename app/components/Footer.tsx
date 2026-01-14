@@ -8,7 +8,7 @@ export default function Footer() {
       </div>
 
       {/* Developer credit */}
-      <div className="text-xs text-white/70 mt-4 md:mt-0 md:absolute md:bottom-4 md:right-6">
+      <div className="mt-4 text-center text-xs text-white/70 md:mt-0 md:absolute md:bottom-4 md:right-6 md:text-right">
         Developed by{" "}
         <a
           href="https://daltondev.me"
