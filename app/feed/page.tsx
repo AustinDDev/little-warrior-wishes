@@ -9,21 +9,12 @@ const FACEBOOK_PAGE_URL =
   "https://www.facebook.com/p/Little-Warrior-Wishes-100082898754331/";
 
 export default function NewsPage() {
-  // Re-parse the plugin after the page hydrates (helps with “loads then disappears” + Next routing)
   useEffect(() => {
+    // If the SDK is already present (client nav back to this page), re-parse.
     const w = window as any;
-
-    const tryParse = () => {
-      if (w.FB && w.FB.XFBML && typeof w.FB.XFBML.parse === "function") {
-        w.FB.XFBML.parse();
-      }
-    };
-
-    // Try immediately, then once more shortly after (FB SDK can load slightly later on mobile)
-    tryParse();
-    const t = setTimeout(tryParse, 800);
-
-    return () => clearTimeout(t);
+    if (w.FB?.XFBML?.parse) {
+      w.FB.XFBML.parse();
+    }
   }, []);
 
   return (
@@ -40,12 +31,18 @@ export default function NewsPage() {
         </div>
       </section>
 
-      {/* Load Facebook JS SDK (recommended for Social Plugins) */}
+      {/* Facebook JS SDK */}
       <div id="fb-root" />
       <Script
         id="facebook-jssdk"
         strategy="afterInteractive"
         src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v20.0"
+        onLoad={() => {
+          const w = window as any;
+          if (w.FB?.XFBML?.parse) {
+            w.FB.XFBML.parse();
+          }
+        }}
       />
 
       {/* PAGE CONTENT */}
@@ -72,7 +69,7 @@ export default function NewsPage() {
           </div>
         </section>
 
-        {/* Facebook timeline embed (SDK/XFBML) */}
+        {/* Facebook timeline embed */}
         <section className="rounded-2xl border p-6 bg-white/70 shadow-sm space-y-3">
           <h2 className="text-xl font-semibold text-center">Facebook timeline</h2>
           <p className="text-sm opacity-70 text-center">
