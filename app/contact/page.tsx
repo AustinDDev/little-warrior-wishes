@@ -152,7 +152,7 @@ export default function Page() {
       {/* Alternate Contact Method */}
 <div className="mt-10 pt-8 border-t border-gray-200 text-center space-y-4">
   <p className="text-gray-700 text-lg">
-    Little Warrior Wishes Memory Trip Application
+    Little Warrior Wishes Memory Trip Application 
   </p>
 
   <a
@@ -163,6 +163,10 @@ export default function Page() {
   >
     Fill Out Our Google Form
   </a>
+
+  <p className="text-sm text-gray-500">
+   
+  </p>
 </div>
       {/* Volunteer CTA Section */}
       <motion.section
