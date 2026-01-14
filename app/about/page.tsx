@@ -87,14 +87,15 @@ export default function AboutPage() {
       {/* OUR STORY */}
       <motion.section {...fadeIn} className="bg-[#f1f5f9] py-20">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
+          {/* MOBILE-CENTERED / DESKTOP-LEFT */}
+          <div className="space-y-6 text-center md:text-left">
             <h2 className="text-4xl font-bold text-[#47549e]">Our Story</h2>
-            <p className="text-gray-700 leading-relaxed">
+            <p className="text-gray-700 leading-relaxed max-w-xl mx-auto md:mx-0">
               Little Warrior Wishes began from our family's experience walking through
               the unknowns of a life-limiting diagnosis. Through that journey, we learned
               the importance of making memories and finding hope in every moment.
             </p>
-            <p className="text-gray-700 leading-relaxed">
+            <p className="text-gray-700 leading-relaxed max-w-xl mx-auto md:mx-0">
               We created this nonprofit to ensure that every family navigating similar
               circumstances can find community, compassion, and the support they deserve.
             </p>
@@ -105,6 +106,7 @@ export default function AboutPage() {
               See Our Events
             </Link>
           </div>
+
           <div className="flex justify-center">
             <Image
               src="/images/familypicture.jpg"
