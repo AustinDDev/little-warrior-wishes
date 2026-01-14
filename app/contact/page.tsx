@@ -149,7 +149,25 @@ export default function Page() {
           )}
         </form>
       </motion.section>
+      {/* Alternate Contact Method */}
+<div className="mt-10 pt-8 border-t border-gray-200 text-center space-y-4">
+  <p className="text-gray-700 text-lg">
+    Prefer a longer or more detailed submission?
+  </p>
 
+  <a
+    href="https://docs.google.com/forms/d/e/1FAIpQLScz7Np4_ICWar4dn23wOARkqqphtY623ses-vEtcqTeKL1mIQ/viewform?usp=sf_link"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-block bg-white border-2 border-[#47549e] text-[#47549e] font-semibold px-8 py-3 rounded-lg hover:bg-[#47549e] hover:text-white transition"
+  >
+    Fill Out Our Google Form
+  </a>
+
+  <p className="text-sm text-gray-500">
+    Opens in a new tab
+  </p>
+</div>
       {/* Volunteer CTA Section */}
       <motion.section
         className="bg-[#47549e] text-white text-center py-24 px-6"
