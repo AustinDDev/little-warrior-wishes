@@ -1,28 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 const FACEBOOK_PAGE_URL =
   process.env.NEXT_PUBLIC_FACEBOOK_PAGE_URL ||
   "https://www.facebook.com/p/Little-Warrior-Wishes-100082898754331/";
 
 export default function NewsPage() {
-  const [iframeLoaded, setIframeLoaded] = useState(false);
-
   const pluginSrc = useMemo(() => {
     const encoded = encodeURIComponent(FACEBOOK_PAGE_URL);
-    // Responsive embed settings for desktop/tablet
     return `https://www.facebook.com/plugins/page.php?href=${encoded}&tabs=timeline&width=500&height=975&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true`;
-  }, []);
-
-  // If the iframe never loads on desktop/tablet, show a fallback message
-  useEffect(() => {
-    const t = setTimeout(() => {
-      // if it hasn't loaded in ~4s, we leave iframeLoaded false and show fallback text
-    }, 4000);
-
-    return () => clearTimeout(t);
   }, []);
 
   return (
@@ -52,6 +40,7 @@ export default function NewsPage() {
             <Link
               href={FACEBOOK_PAGE_URL}
               target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center justify-center rounded-xl px-4 py-2 font-medium bg-[#47549e] text-white hover:opacity-90"
             >
               Open Facebook Updates
@@ -63,18 +52,18 @@ export default function NewsPage() {
           </div>
         </section>
 
-        {/* MOBILE: CTA INSTEAD OF EMBED */}
-        <section className="rounded-2xl border p-6 bg-white/70 shadow-sm space-y-3 md:hidden">
+        {/* MOBILE ONLY: Button/Card */}
+        <section className="block md:hidden rounded-2xl border p-6 bg-white/70 shadow-sm space-y-3">
           <h2 className="text-xl font-semibold text-center">Facebook timeline</h2>
           <p className="text-sm opacity-70 text-center">
-            On iPhone, Facebook embeds can be blocked or disappear. Tap below to view the
-            timeline directly on Facebook.
+            View our latest updates directly in the Facebook app or your browser.
           </p>
 
           <div className="flex justify-center pt-2">
             <Link
               href={FACEBOOK_PAGE_URL}
               target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold bg-[#47549e] text-white hover:opacity-90"
             >
               View Timeline on Facebook
@@ -82,7 +71,7 @@ export default function NewsPage() {
           </div>
         </section>
 
-        {/* DESKTOP/TABLET: EMBED */}
+        {/* DESKTOP/TABLET ONLY: Real Embed */}
         <section className="hidden md:block rounded-2xl border p-6 bg-white/70 shadow-sm space-y-3">
           <h2 className="text-xl font-semibold text-center">Facebook timeline</h2>
           <p className="text-sm opacity-70 text-center">
@@ -91,28 +80,18 @@ export default function NewsPage() {
 
           <div className="flex justify-center pt-2">
             <div className="w-full max-w-[500px] rounded-xl overflow-hidden">
-              {/* Give it real space so it can’t “collapse” */}
-              <div className="min-h-[975px]">
-                <iframe
-                  title="Little Warrior Wishes Facebook Page"
-                  src={pluginSrc}
-                  className="block w-full"
-                  style={{ border: "none", height: "975px" }}
-                  scrolling="no"
-                  frameBorder="0"
-                  allow="encrypted-media; picture-in-picture; clipboard-write"
-                  loading="lazy"
-                  onLoad={() => setIframeLoaded(true)}
-                />
-              </div>
+              <iframe
+                title="Little Warrior Wishes Facebook Page"
+                src={pluginSrc}
+                className="block w-full"
+                style={{ border: "none", height: "975px" }}
+                scrolling="no"
+                frameBorder="0"
+                allow="encrypted-media; picture-in-picture; clipboard-write"
+                loading="lazy"
+              />
             </div>
           </div>
-
-          {!iframeLoaded && (
-            <p className="text-sm opacity-70 text-center pt-2">
-              Having trouble loading the embed? Use the “Open Facebook Updates” button above.
-            </p>
-          )}
         </section>
       </div>
     </div>
