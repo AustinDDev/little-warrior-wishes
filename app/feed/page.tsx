@@ -29,7 +29,7 @@ export default function NewsPage() {
 
       {/* PAGE CONTENT */}
       <div className="mx-auto max-w-3xl px-4 py-10 space-y-8">
-        {/* Link box */}
+        {/* Latest updates (shows on ALL screen sizes) */}
         <section className="rounded-2xl border p-6 bg-white/70 shadow-sm space-y-3">
           <h2 className="text-xl font-semibold text-center">Latest updates</h2>
           <p className="opacity-80 text-center">
@@ -52,26 +52,7 @@ export default function NewsPage() {
           </div>
         </section>
 
-        {/* MOBILE ONLY: Button/Card */}
-        <section className="block md:hidden rounded-2xl border p-6 bg-white/70 shadow-sm space-y-3">
-          <h2 className="text-xl font-semibold text-center">Facebook timeline</h2>
-          <p className="text-sm opacity-70 text-center">
-            View our latest updates directly in the Facebook app or your browser.
-          </p>
-
-          <div className="flex justify-center pt-2">
-            <Link
-              href={FACEBOOK_PAGE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold bg-[#47549e] text-white hover:opacity-90"
-            >
-              View Timeline on Facebook
-            </Link>
-          </div>
-        </section>
-
-        {/* DESKTOP/TABLET ONLY: Real Embed */}
+        {/* Desktop/Tablet ONLY: Real Embed */}
         <section className="hidden md:block rounded-2xl border p-6 bg-white/70 shadow-sm space-y-3">
           <h2 className="text-xl font-semibold text-center">Facebook timeline</h2>
           <p className="text-sm opacity-70 text-center">
