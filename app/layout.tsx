@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import AccessibilityNoticeModal from "./components/AccessibilityNoticeModal";
 
 export const metadata: Metadata = {
   title: "Little Warrior Wishes",
@@ -19,10 +20,11 @@ export default function RootLayout({
         {/* Header at top (sticky inside its own component) */}
         <Header />
 
+        {/* Accessibility notice modal (shows once per device/browser) */}
+        <AccessibilityNoticeModal />
+
         {/* Main content grows to fill remaining space */}
-        <main className="flex-1">
-          {children}
-        </main>
+        <main className="flex-1">{children}</main>
 
         {/* Footer stays at the bottom of the viewport when content is short */}
         <Footer />

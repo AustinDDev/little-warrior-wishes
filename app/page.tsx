@@ -14,20 +14,20 @@ export default function HomePage() {
             Create Memories. Inspire Hope.
           </h1>
           <p className="text-lg">
-            "Little Warrior Wishes exists to assist families in creating
-            lasting memories when time frames are limited."
+            "Little Warrior Wishes exists to assist families in creating lasting
+            memories when time frames are limited."
           </p>
 
           <div className="flex justify-center gap-4 mt-6">
             <Link
               href="/donate"
-              className="bg-white text-[#47549e] px-6 py-3 rounded font-semibold hover:bg-gray-100 transition"
+              className="btn-link bg-white text-[#47549e] px-6 py-3 rounded font-semibold hover:bg-gray-100 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#111827]"
             >
               Donate Now
             </Link>
             <Link
               href="/about"
-              className="bg-[#47549e] text-white px-6 py-3 rounded font-semibold hover:bg-[#3a468e] transition"
+              className="btn-link bg-[#47549e] text-white px-6 py-3 rounded font-semibold hover:bg-[#3a468e] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#111827]"
             >
               Learn More
             </Link>
@@ -81,11 +81,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Donate CTA Section – GAP REDUCED */}
+      {/* Donate CTA Section */}
       <section className="bg-[#47549e] text-white text-center py-12 px-6 space-y-6">
-        <h2 className="text-4xl font-bold">
-          Your Support Makes Hope Possible
-        </h2>
+        <h2 className="text-4xl font-bold">Your Support Makes Hope Possible</h2>
 
         <p className="text-lg max-w-2xl mx-auto text-gray-200">
           Whether through volunteering, donating, or sharing your story, your
@@ -96,13 +94,13 @@ export default function HomePage() {
         <div className="flex justify-center gap-4">
           <Link
             href="/donate"
-            className="bg-white text-[#47549e] px-6 py-3 rounded font-semibold hover:bg-gray-100 transition"
+            className="btn-link bg-white text-[#47549e] px-6 py-3 rounded font-semibold hover:bg-gray-100 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white"
           >
             Donate
           </Link>
           <Link
             href="/contact"
-            className="border border-white px-6 py-3 rounded font-semibold hover:bg-[#82b0d5] transition"
+            className="btn-link bg-white text-[#47549e] px-6 py-3 rounded font-semibold hover:bg-gray-100 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white"
           >
             Contact Us
           </Link>

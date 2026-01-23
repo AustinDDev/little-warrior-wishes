@@ -2,14 +2,98 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom global styles */
+/* =========================
+   Global Accessibility Defaults (WCAG-friendly)
+   ========================= */
+
+/* Base body styling */
 body {
   background-color: white;
   color: #1a1a1a;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3 {
+/* Headings */
+h1,
+h2,
+h3 {
   font-weight: 700;
   color: #47549e;
+}
+
+/* -------------------------------------------------
+   Links (ADA-safe WITHOUT always-on underlines)
+   - No underline by default
+   - Underline appears on hover/focus-visible
+   - Does NOT interfere with button borders
+-------------------------------------------------- */
+a {
+  text-decoration: none;
+  font-weight: inherit;
+}
+
+a:hover,
+a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+
+/* -------------------------------------------------
+   Keyboard focus visibility (CRITICAL for ADA)
+-------------------------------------------------- */
+:focus-visible {
+  outline: 3px solid #111827; /* strong contrast ring */
+  outline-offset: 3px;
+}
+
+/* Prevent accidental outline removal */
+:focus {
+  outline-offset: 3px;
+}
+
+/* -------------------------------------------------
+   Form & interactive element defaults
+-------------------------------------------------- */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* Improve form control clarity */
+input,
+select,
+textarea {
+  border-radius: 0.75rem;
+}
+
+/* Consistent focus ring for form controls */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  outline: 3px solid #111827;
+  outline-offset: 3px;
+}
+
+/* -------------------------------------------------
+   Reduced motion support (WCAG best practice)
+-------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

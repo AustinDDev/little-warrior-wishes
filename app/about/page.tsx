@@ -99,9 +99,10 @@ export default function AboutPage() {
               We created this nonprofit to ensure that every family navigating similar
               circumstances can find community, compassion, and the support they deserve.
             </p>
+
             <Link
               href="/events"
-              className="inline-block bg-[#82b0d5] text-white px-6 py-3 rounded hover:bg-[#47549e] transition font-semibold"
+              className="btn-link inline-block bg-[#82b0d5] text-white px-6 py-3 rounded font-semibold hover:bg-[#47549e] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#111827]"
             >
               See Our Events
             </Link>
@@ -165,16 +166,18 @@ export default function AboutPage() {
           involvement helps us bring comfort, connection, and joy to families
           who need it most.
         </p>
+
         <div className="flex justify-center gap-4">
           <Link
             href="/donate"
-            className="bg-white text-[#47549e] px-6 py-3 rounded font-semibold hover:bg-gray-100 transition"
+            className="btn-link bg-white text-[#47549e] px-6 py-3 rounded font-semibold hover:bg-gray-100 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white"
           >
             Donate
           </Link>
+
           <Link
             href="/contact"
-            className="border border-white px-6 py-3 rounded font-semibold hover:bg-[#82b0d5] transition"
+            className="btn-link bg-white text-[#47549e] px-6 py-3 rounded font-semibold hover:bg-gray-100 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white"
           >
             Contact Us
           </Link>
